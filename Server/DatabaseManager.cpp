@@ -4,7 +4,7 @@
 #include <QDateTime>
 
 DatabaseManager::DatabaseManager() {
-    m_db = QSqlDatabase::addDatabase("QMYSQL");
+    m_db = QSqlDatabase::addDatabase("QSQLITE");
 }
 
 DatabaseManager::~DatabaseManager() {
@@ -14,10 +14,8 @@ DatabaseManager::~DatabaseManager() {
 bool DatabaseManager::connect() {
     QMutexLocker locker(&m_mutex);
     
-    m_db.setHostName("localhost");
-    m_db.setDatabaseName("chatapp");
-    m_db.setUserName("root");
-    m_db.setPassword("Arainyday_06");
+    // SQLite uses a file path instead of host/username/password
+    m_db.setDatabaseName("chatapp.db");  // Creates file in current directory
     
     if (!m_db.open()) {
         qDebug() << "Database connection failed:" << m_db.lastError().text();
@@ -27,7 +25,6 @@ bool DatabaseManager::connect() {
     createTables();
     return true;
 }
-
 void DatabaseManager::disconnect() {
     QMutexLocker locker(&m_mutex);
     if (m_db.isOpen()) {

@@ -4,6 +4,7 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QScrollBar>
 
 ChatWidget::ChatWidget(NetworkManager *networkManager, const QString& currentUser, 
                       const QString& contact, bool isGroup, QWidget *parent)
