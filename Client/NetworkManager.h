@@ -25,6 +25,8 @@ public:
     void kickMember(const QString& groupName, const QString& member);
     void requestGroupMembers(const QString& groupName);
     
+    QStringList getAllUsersList() const { return m_allUsersList; }
+    
 signals:
     void connected();
     void disconnected();
@@ -52,6 +54,7 @@ private:
     QTcpSocket *m_socket;
     quint32 m_expectedSize;
     QByteArray m_buffer;
+    QStringList m_allUsersList;  // Store received users list
 };
 
 #endif // NETWORKMANAGER_H

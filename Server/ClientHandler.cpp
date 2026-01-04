@@ -114,9 +114,11 @@ void ClientHandler::handleRegister(const ChatProtocol::Message& msg) {
     if (m_database->registerUser(msg.sender, msg.content)) {
         response.type = ChatProtocol::MessageType::AUTH_SUCCESS;
         response.content = "Registration successful";
+        qDebug() << "✓ New user registered:" << msg.sender;
     } else {
         response.type = ChatProtocol::MessageType::AUTH_FAILURE;
         response.content = "Username already exists";
+        qDebug() << "✗ Registration failed (username exists):" << msg.sender;
     }
     
     sendMessage(response);
@@ -135,10 +137,11 @@ void ClientHandler::handleLogin(const ChatProtocol::Message& msg) {
         
         response.type = ChatProtocol::MessageType::AUTH_SUCCESS;
         response.content = "Login successful";
-        qDebug() << "User logged in:" << m_username;
+        qDebug() << "✓ User connected and authenticated:" << m_username;
     } else {
         response.type = ChatProtocol::MessageType::AUTH_FAILURE;
         response.content = "Invalid credentials";
+        qDebug() << "✗ Login failed for:" << msg.sender;
     }
     
     sendMessage(response);

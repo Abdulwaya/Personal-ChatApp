@@ -36,6 +36,7 @@ private:
     
     NetworkManager *m_networkManager;
     QString m_username;
+    QStringList m_allUsers;  // Store all users
     
     QListWidget *m_contactsList;
     QStackedWidget *m_chatStack;

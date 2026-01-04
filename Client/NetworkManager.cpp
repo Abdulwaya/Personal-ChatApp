@@ -169,7 +169,8 @@ void NetworkManager::handleMessage(const ChatProtocol::Message& msg) {
             break;
             
         case ChatProtocol::MessageType::USERS_LIST:
-            emit usersListReceived(msg.content.split(",", Qt::SkipEmptyParts));
+            m_allUsersList = msg.content.split(",", Qt::SkipEmptyParts);
+            emit usersListReceived(m_allUsersList);
             break;
             
         case ChatProtocol::MessageType::GROUPS_LIST:

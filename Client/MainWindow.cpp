@@ -34,9 +34,9 @@ void MainWindow::setupUI() {
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     
-    // Left sidebar
+    // Left sidebar - DARK THEME
     QWidget *sidebar = new QWidget();
-    sidebar->setStyleSheet("background-color: #EDEDED;");
+    sidebar->setStyleSheet("background-color: #1E1E1E;");
     sidebar->setMaximumWidth(350);
     sidebar->setMinimumWidth(300);
     
@@ -44,9 +44,9 @@ void MainWindow::setupUI() {
     sidebarLayout->setSpacing(0);
     sidebarLayout->setContentsMargins(0, 0, 0, 0);
     
-    // User header
+    // User header - DARK THEME
     QWidget *userHeader = new QWidget();
-    userHeader->setStyleSheet("background-color: #EDEDED; padding: 10px;");
+    userHeader->setStyleSheet("background-color: #2A2A2A; padding: 10px;");
     QHBoxLayout *userHeaderLayout = new QHBoxLayout(userHeader);
     
     m_usernameLabel = new QLabel(m_username);
@@ -54,13 +54,14 @@ void MainWindow::setupUI() {
     usernameFont.setPointSize(12);
     usernameFont.setBold(true);
     m_usernameLabel->setFont(usernameFont);
+    m_usernameLabel->setStyleSheet("color: #FFFFFF;");
     
     userHeaderLayout->addWidget(m_usernameLabel);
     userHeaderLayout->addStretch();
     
-    // Action buttons
+    // Action buttons - DARK THEME
     QWidget *actionsWidget = new QWidget();
-    actionsWidget->setStyleSheet("background-color: #EDEDED;");
+    actionsWidget->setStyleSheet("background-color: #2A2A2A;");
     QHBoxLayout *actionsLayout = new QHBoxLayout(actionsWidget);
     actionsLayout->setContentsMargins(10, 5, 10, 10);
     
@@ -70,30 +71,31 @@ void MainWindow::setupUI() {
                                    "QPushButton:hover { background-color: #20BA5A; }");
     
     m_newGroupButton = new QPushButton("New Group");
-    m_newGroupButton->setStyleSheet("QPushButton { background-color: #075E54; color: white; padding: 8px 15px; "
+    m_newGroupButton->setStyleSheet("QPushButton { background-color: #128C7E; color: white; padding: 8px 15px; "
                                     "border-radius: 5px; font-weight: bold; }"
-                                    "QPushButton:hover { background-color: #128C7E; }");
+                                    "QPushButton:hover { background-color: #0D7A6F; }");
     
     actionsLayout->addWidget(m_newChatButton);
     actionsLayout->addWidget(m_newGroupButton);
     
-    // Contacts list
+    // Contacts list - DARK THEME
     m_contactsList = new QListWidget();
-    m_contactsList->setStyleSheet("QListWidget { background-color: white; border: none; }"
-                                 "QListWidget::item { padding: 12px; border-bottom: 1px solid #f0f0f0; }"
-                                 "QListWidget::item:selected { background-color: #EDEDED; }");
+    m_contactsList->setStyleSheet("QListWidget { background-color: #1E1E1E; border: none; color: #FFFFFF; }"
+                                 "QListWidget::item { padding: 12px; border-bottom: 1px solid #2A2A2A; }"
+                                 "QListWidget::item:selected { background-color: #2A2A2A; }"
+                                 "QListWidget::item:hover { background-color: #252525; }");
     
     sidebarLayout->addWidget(userHeader);
     sidebarLayout->addWidget(actionsWidget);
     sidebarLayout->addWidget(m_contactsList);
     
-    // Chat area
+    // Chat area - DARK THEME
     m_chatStack = new QStackedWidget();
-    m_chatStack->setStyleSheet("background-color: #E5DDD5;");
+    m_chatStack->setStyleSheet("background-color: #0D1418;");
     
     QLabel *welcomeLabel = new QLabel("Select a chat to start messaging");
     welcomeLabel->setAlignment(Qt::AlignCenter);
-    welcomeLabel->setStyleSheet("color: #888; font-size: 16px;");
+    welcomeLabel->setStyleSheet("color: #8696A0; font-size: 16px;");
     m_chatStack->addWidget(welcomeLabel);
     
     mainLayout->addWidget(sidebar);
@@ -130,7 +132,46 @@ ChatWidget* MainWindow::getChatWidget(const QString& contact, bool isGroup) {
 }
 
 void MainWindow::onNewChatClicked() {
-    m_networkManager->requestUsers();
+    // Get list of all users except current user
+    QStringList availableUsers;
+    QStringList allUsers = m_networkManager->getAllUsersList();
+    
+    for (const QString& user : allUsers) {
+        if (user != m_username) {
+            availableUsers.append(user);
+        }
+    }
+    
+    if (availableUsers.isEmpty()) {
+        QMessageBox::information(this, "No Users", "No other users available to chat with.");
+        return;
+    }
+    
+    // Show dialog to select user
+    bool ok;
+    QString selectedUser = QInputDialog::getItem(this, "Start New Chat",
+                                                 "Select user to chat with:",
+                                                 availableUsers, 0, false, &ok);
+    
+    if (ok && !selectedUser.isEmpty()) {
+        // Add to contacts list if not already there
+        bool userExists = false;
+        for (int i = 0; i < m_contactsList->count(); ++i) {
+            if (m_contactsList->item(i)->text() == selectedUser) {
+                userExists = true;
+                m_contactsList->setCurrentRow(i);
+                onContactSelected(m_contactsList->item(i));
+                break;
+            }
+        }
+        
+        if (!userExists) {
+            QListWidgetItem *item = new QListWidgetItem(selectedUser);
+            m_contactsList->addItem(item);
+            m_contactsList->setCurrentItem(item);
+            onContactSelected(item);
+        }
+    }
 }
 
 void MainWindow::onNewGroupClicked() {
@@ -145,6 +186,8 @@ void MainWindow::onNewGroupClicked() {
 }
 
 void MainWindow::onUsersListReceived(const QStringList& users) {
+    m_allUsers = users;  // Store the users list
+    
     m_contactsList->clear();
     
     // Add groups first

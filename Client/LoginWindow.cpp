@@ -26,6 +26,9 @@ void LoginWindow::setupUI() {
     setWindowTitle("Chat App - Login");
     setFixedSize(400, 350);
     
+    // Dark theme for login window
+    setStyleSheet("QWidget { background-color: #1E1E1E; }");
+    
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setSpacing(15);
     mainLayout->setContentsMargins(40, 40, 40, 40);
@@ -37,29 +40,36 @@ void LoginWindow::setupUI() {
     titleFont.setBold(true);
     titleLabel->setFont(titleFont);
     titleLabel->setAlignment(Qt::AlignCenter);
-    titleLabel->setStyleSheet("color: #075E54;");
+    titleLabel->setStyleSheet("color: #25D366;");
     
     // Username
     QLabel *usernameLabel = new QLabel("Username:");
+    usernameLabel->setStyleSheet("color: #E9EDEF;");
     m_usernameEdit = new QLineEdit();
     m_usernameEdit->setPlaceholderText("Enter username");
-    m_usernameEdit->setStyleSheet("QLineEdit { padding: 8px; border: 1px solid #ccc; border-radius: 5px; }");
+    m_usernameEdit->setStyleSheet("QLineEdit { padding: 8px; border: 1px solid #3A3A3A; border-radius: 5px; "
+                                  "background-color: #2A2A2A; color: #FFFFFF; }"
+                                  "QLineEdit::placeholder { color: #8696A0; }");
     
     // Password
     QLabel *passwordLabel = new QLabel("Password:");
+    passwordLabel->setStyleSheet("color: #E9EDEF;");
     m_passwordEdit = new QLineEdit();
     m_passwordEdit->setPlaceholderText("Enter password");
     m_passwordEdit->setEchoMode(QLineEdit::Password);
-    m_passwordEdit->setStyleSheet("QLineEdit { padding: 8px; border: 1px solid #ccc; border-radius: 5px; }");
+    m_passwordEdit->setStyleSheet("QLineEdit { padding: 8px; border: 1px solid #3A3A3A; border-radius: 5px; "
+                                  "background-color: #2A2A2A; color: #FFFFFF; }"
+                                  "QLineEdit::placeholder { color: #8696A0; }");
     
     // Remember me
     m_rememberMeCheck = new QCheckBox("Remember me");
+    m_rememberMeCheck->setStyleSheet("QCheckBox { color: #E9EDEF; }");
     
     // Buttons
     m_loginButton = new QPushButton("Login");
-    m_loginButton->setStyleSheet("QPushButton { background-color: #075E54; color: white; padding: 10px; "
+    m_loginButton->setStyleSheet("QPushButton { background-color: #128C7E; color: white; padding: 10px; "
                                  "border-radius: 5px; font-weight: bold; }"
-                                 "QPushButton:hover { background-color: #128C7E; }");
+                                 "QPushButton:hover { background-color: #0D7A6F; }");
     
     m_registerButton = new QPushButton("Register");
     m_registerButton->setStyleSheet("QPushButton { background-color: #25D366; color: white; padding: 10px; "
@@ -69,7 +79,7 @@ void LoginWindow::setupUI() {
     // Status
     m_statusLabel = new QLabel();
     m_statusLabel->setAlignment(Qt::AlignCenter);
-    m_statusLabel->setStyleSheet("color: red;");
+    m_statusLabel->setStyleSheet("color: #FF6B6B;");
     
     // Layout assembly
     mainLayout->addWidget(titleLabel);

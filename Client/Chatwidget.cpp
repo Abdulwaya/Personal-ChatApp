@@ -25,9 +25,9 @@ void ChatWidget::setupUI() {
     mainLayout->setSpacing(0);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     
-    // Header
+    // Header - DARK THEME
     QWidget *header = new QWidget();
-    header->setStyleSheet("background-color: #075E54; padding: 10px;");
+    header->setStyleSheet("background-color: #2A2A2A; padding: 10px;");
     header->setFixedHeight(60);
     
     QHBoxLayout *headerLayout = new QHBoxLayout(header);
@@ -37,7 +37,7 @@ void ChatWidget::setupUI() {
     headerFont.setPointSize(14);
     headerFont.setBold(true);
     m_contactLabel->setFont(headerFont);
-    m_contactLabel->setStyleSheet("color: white;");
+    m_contactLabel->setStyleSheet("color: #FFFFFF;");
     
     headerLayout->addWidget(m_contactLabel);
     headerLayout->addStretch();
@@ -46,27 +46,28 @@ void ChatWidget::setupUI() {
         m_groupMembersButton = new QPushButton("Members");
         m_groupMembersButton->setStyleSheet("QPushButton { background-color: #128C7E; color: white; "
                                            "padding: 5px 15px; border-radius: 3px; }"
-                                           "QPushButton:hover { background-color: #075E54; }");
+                                           "QPushButton:hover { background-color: #0D7A6F; }");
         headerLayout->addWidget(m_groupMembersButton);
         connect(m_groupMembersButton, &QPushButton::clicked, this, &ChatWidget::onGroupMembersClicked);
     }
     
-    // Chat display
+    // Chat display - DARK THEME
     m_chatDisplay = new QTextEdit();
     m_chatDisplay->setReadOnly(true);
-    m_chatDisplay->setStyleSheet("QTextEdit { background-color: #E5DDD5; border: none; padding: 10px; }");
+    m_chatDisplay->setStyleSheet("QTextEdit { background-color: #0D1418; border: none; padding: 10px; }");
     
-    // Input area
+    // Input area - DARK THEME
     QWidget *inputArea = new QWidget();
-    inputArea->setStyleSheet("background-color: #F0F0F0; padding: 10px;");
+    inputArea->setStyleSheet("background-color: #1E1E1E; padding: 10px;");
     
     QHBoxLayout *inputLayout = new QHBoxLayout(inputArea);
     inputLayout->setContentsMargins(10, 10, 10, 10);
     
     m_messageInput = new QLineEdit();
     m_messageInput->setPlaceholderText("Type a message");
-    m_messageInput->setStyleSheet("QLineEdit { padding: 10px; border: 1px solid #ccc; "
-                                 "border-radius: 20px; background-color: white; }");
+    m_messageInput->setStyleSheet("QLineEdit { padding: 10px; border: 1px solid #3A3A3A; "
+                                 "border-radius: 20px; background-color: #2A2A2A; color: #FFFFFF; }"
+                                 "QLineEdit::placeholder { color: #8696A0; }");
     
     m_sendButton = new QPushButton("Send");
     m_sendButton->setStyleSheet("QPushButton { background-color: #25D366; color: white; "
@@ -106,7 +107,7 @@ void ChatWidget::appendMessage(const QString& sender, const QString& content, co
     bool isSentByMe = (sender == m_currentUser);
     
     QString alignment = isSentByMe ? "right" : "left";
-    QString bgColor = isSentByMe ? "#DCF8C6" : "#FFFFFF";
+    QString bgColor = isSentByMe ? "#005C4B" : "#1E2A2F";
     QString senderName = m_isGroup && !isSentByMe ? sender + ": " : "";
     QString timeStr = timestamp.toString("hh:mm");
     
@@ -114,9 +115,9 @@ void ChatWidget::appendMessage(const QString& sender, const QString& content, co
         "<div style='text-align: %1; margin: 5px;'>"
         "  <div style='display: inline-block; background-color: %2; padding: 8px 12px; "
         "             border-radius: 10px; max-width: 70%; text-align: left;'>"
-        "    <span style='font-weight: bold; color: #075E54;'>%3</span>"
-        "    <span style='color: #303030;'>%4</span><br>"
-        "    <span style='color: #999; font-size: 10px;'>%5</span>"
+        "    <span style='font-weight: bold; color: #25D366;'>%3</span>"
+        "    <span style='color: #E9EDEF;'>%4</span><br>"
+        "    <span style='color: #8696A0; font-size: 10px;'>%5</span>"
         "  </div>"
         "</div>"
     ).arg(alignment, bgColor, senderName, content, timeStr);
