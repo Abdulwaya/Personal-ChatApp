@@ -17,7 +17,7 @@ bool DatabaseManager::connect() {
     m_db.setHostName("localhost");
     m_db.setDatabaseName("chatapp");
     m_db.setUserName("root");
-    m_db.setPassword(""); // Change as needed
+    m_db.setPassword("Arainyday_06");
     
     if (!m_db.open()) {
         qDebug() << "Database connection failed:" << m_db.lastError().text();
