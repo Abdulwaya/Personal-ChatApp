@@ -4,6 +4,8 @@
 #include <QString>
 #include <QDataStream>
 #include <QDateTime>
+#include <QIODevice>
+#include <QByteArray>
 
 namespace ChatProtocol {
 
